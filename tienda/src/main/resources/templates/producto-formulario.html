@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${modoEdicion} ? 'Editar Usuario' : 'Nuevo Usuario'"></title>
+    <title th:text="${modoEdicion} ? 'Editar Producto' : 'Nuevo Producto'"></title>
 
     <style>
         :root {
@@ -157,45 +157,59 @@
 <body>
 
 <div class="container">
-    <h1 th:text="${modoEdicion} ? 'Editar Usuario' : 'Nuevo Usuario'">Nuevo Usuario</h1>
-    <p class="subtitulo">Completa la información del perfil</p>
+    <h1 th:text="${modoEdicion} ? 'Editar Producto' : 'Nuevo Producto'">Nuevo Producto</h1>
+    <p class="subtitulo">Completa la información del nuevo producto</p>
 
-    <form th:action="@{/usuarios/guardar}"
-          th:object="${usuario}"
+    <form th:action="@{/productos/guardar}"
+          th:object="${producto}"
           method="post">
 
-        <input type="hidden" th:field="*{idUsuario}" th:if="${modoEdicion}">
+        <input type="hidden" th:field="*{idProducto}" th:if="${modoEdicion}">
 
         <div class="campo">
-            <label for="nombreUsuario">Nombre</label>
-            <input type="text" id="nombreUsuario" th:field="*{nombreUsuario}" placeholder="Ingrese el nombre del usuario">
+            <label for="nombreProducto">Producto</label>
+            <input type="text" id="nombreProducto" th:field="*{nombreProducto}" placeholder="Ingrese el Producto">
             <div class="error"
-                 th:if="${#fields.hasErrors('nombreUsuario')}"
-                 th:errors="*{nombreUsuario}">Error en nombre</div>
+                 th:if="${#fields.hasErrors('nombreProducto')}"
+                 th:errors="*{nombreProducto}">Error en Producto</div>
         </div>
 
         <div class="campo">
-            <label for="apellidoUsuario">Apellido</label>
-            <input type="text" id="apellidoUsuario" th:field="*{apellidoUsuario}" placeholder="Ingrese el apellido del usuario">
+            <label for="precioProducto">Producto</label>
+            <input type="text" id="precioProducto" th:field="*{precioProducto}" placeholder="Ingrese el precio del producto">
             <div class="error"
-                 th:if="${#fields.hasErrors('apellidoUsuario')}"
-                 th:errors="*{apellidoUsuario}">Error en apellido</div>
+                 th:if="${#fields.hasErrors('precioProducto')}"
+                 th:errors="*{precioProducto}">Error en precio</div>
         </div>
 
         <div class="campo">
-            <label for="edadUsuario">Edad</label>
-            <input type="number" id="edadUsuario" th:field="*{edadUsuario}" placeholder="0">
+            <label for="stockProducto">Stock</label>
+            <input type="number" id="stockProducto" th:field="*{stockProducto}" placeholder="0">
             <div class="error"
-                 th:if="${#fields.hasErrors('edadUsuario')}"
-                 th:errors="*{edadUsuario}">Error en edad</div>
+                 th:if="${#fields.hasErrors('stockProducto')}"
+                 th:errors="*{stockProducto}">Error en stock</div>
+        </div>
+
+        <div class="campo">
+            <label for="categoria">Categoría</label>
+            <select id="categoria" th:field="*{categoria.idCategoria}" class="combo-box">
+                <option value="" disabled selected>Seleccione una categoría</option>
+                <option th:each="cat : ${categorias}"
+                        th:value="${cat.idCategoria}"
+                        th:text="${cat.nombreCategoria}">
+                </option>
+            </select>
+            <div class="error"
+                 th:if="${#fields.hasErrors('categoria')}"
+                 th:errors="*{categoria}">Error en categoria</div>
         </div>
 
         <div class="acciones">
             <button type="submit" class="btn btn-guardar">
-              Guardar
+                Guardar
             </button>
 
-            <a th:href="@{/usuarios}" class="btn btn-cancelar">Volver</a>
+            <a th:href="@{/productos}" class="btn btn-cancelar">Volver</a>
         </div>
     </form>
 </div>

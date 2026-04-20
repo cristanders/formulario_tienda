@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Usuarios</title>
+    <title>Lista de Productos</title>
     <style>
         :root {
             --primary: #4f46e5;
@@ -51,7 +51,6 @@
             font-size: 1.1rem;
         }
 
-
         .button-group {
             display: flex;
             gap: 16px;
@@ -73,7 +72,6 @@
             gap: 8px;
         }
 
-
         .btn-home {
             background: linear-gradient(to right, #64748b, #475569);
             box-shadow: 0 10px 25px rgba(71, 85, 105, 0.3);
@@ -83,10 +81,6 @@
             transform: scale(1.05) translateY(-3px);
             box-shadow: 0 15px 30px rgba(79, 70, 229, 0.5);
             filter: brightness(1.1);
-        }
-
-        .btn-home:hover {
-            box-shadow: 0 15px 30px rgba(71, 85, 105, 0.4);
         }
 
         .table-container {
@@ -186,16 +180,35 @@
             font-weight: 600;
             border: 1px solid #e2e8f0;
         }
+
+        .stock-badge {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .stock-normal {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stock-low {
+            background: #fff7ed;
+            color: #c2410c;
+            border: 1px solid #fdba74;
+        }
     </style>
 </head>
 <body>
 
-<h1 class="titulo">Lista de Usuarios</h1>
-<p class="subtitulo">Gestión de miembros y permisos del sistema</p>
+<h1 class="titulo">Lista de Productos</h1>
+<p class="subtitulo">Gestión de Productos</p>
 
 <div class="button-group">
-    <a th:href="@{/usuarios/nuevo}" class="btn-nuevo">
-        <span>+</span> Registrar Nuevo Usuario
+    <a th:href="@{/productos/nuevo}" class="btn-nuevo">
+        <span>+</span> Registrar Nuevo Producto
     </a>
     <a th:href="@{/home}" class="btn-nuevo btn-home">
         <span>←</span> Volver a Home
@@ -207,25 +220,35 @@
         <thead>
         <tr>
             <th>ID</th>
-            <th>Nombre Completo</th>
-            <th>Edad</th>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Categoría</th>
             <th style="text-align: right;">Operaciones</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="usuario : ${usuarios}">
+        <tr th:each="producto : ${productos}">
             <td>
-                <span class="user-id" th:text="${'#' + usuario.idUsuario}">#1</span>
+                <span class="user-id" th:text="${'#' + producto.idProducto}">#1</span>
             </td>
             <td>
-                <div style="font-weight: 600;" th:text="${usuario.nombreUsuario + ' ' + usuario.apellidoUsuario}">Nombre Apellido</div>
+                <div style="font-weight: 600;" th:text="${producto.nombreProducto}">Nombre</div>
             </td>
             <td>
-                <span class="age-badge" th:text="${usuario.edadUsuario + ' años'}">25 años</span>
+                <span class="age-badge" th:text="${'Q.' + producto.precioProducto}">Q.0.00</span>
+            </td>
+            <td>
+                <span class="stock-badge"
+                      th:classappend="${producto.stockProducto <= 5} ? 'stock-low' : 'stock-normal'"
+                      th:text="${producto.stockProducto}">0</span>
+            </td>
+            <td>
+                <span class="age-badge" th:text="${producto.categoria.nombreCategoria}">Categoría</span>
             </td>
             <td class="actions">
-                <a th:href="@{/usuarios/editar/{id}(id=${usuario.idUsuario})}" class="btn-action btn-edit">Editar</a>
-                <a th:href="@{/usuarios/eliminar/{id}(id=${usuario.idUsuario})}" class="btn-action btn-delete">Eliminar</a>
+                <a th:href="@{/productos/editar/{id}(id=${producto.idProducto})}" class="btn-action btn-edit">Editar</a>
+                <a th:href="@{/productos/eliminar/{id}(id=${producto.idProducto})}" class="btn-action btn-delete">Eliminar</a>
             </td>
         </tr>
         </tbody>

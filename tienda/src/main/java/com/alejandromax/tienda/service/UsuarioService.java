@@ -10,4 +10,6 @@ public interface UsuarioService {
     Usuario crear(Usuario usuario);
     Usuario actualizar(Integer id, Usuario usuario);
     void eliminar(Integer id);
+    void guardar(Usuario usuario);
+
 }

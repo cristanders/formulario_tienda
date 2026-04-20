@@ -1,12 +1,15 @@
 package com.alejandromax.tienda.controller;
 
 import com.alejandromax.tienda.entity.Usuario;
+import com.alejandromax.tienda.repository.UsuarioRepository;
 import com.alejandromax.tienda.service.UsuarioService;
+import com.alejandromax.tienda.service.UsuarioServiceImpl;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -42,14 +45,32 @@ public class UsuarioController {
 
     // Método para crear un nuevo usuario
     @PostMapping("/guardar")
-    public String crear(@Valid @ModelAttribute("usuario") Usuario usuario, Model model, BindingResult result) {
+    public String guardar(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
-            model.addAttribute("modeEdicion", false);
-            return "usuario-formulario";
+            model.addAttribute("modoEdicion", usuario.getIdUsuario() != null);
+            return usuario.getIdUsuario() != null ? "usuario-edicion" : "usuario-formulario";
         }
-
-        usuarioService.crear(usuario);
+        usuarioService.guardar(usuario);
         return "redirect:/usuarios";
+    }
+
+    // Método para eliminar un usuario
+    @GetMapping("/eliminar/{id}")
+    public String eliminarUsuario(@PathVariable("id") Integer id) {
+        usuarioService.eliminar(id);
+        System.out.println( id + " eliminado ");
+        return "redirect:/usuarios";
+    }
+
+    // Metodo para editar un usuario
+    @GetMapping("/editar/{id}")
+    public String mostrarFormularioEditar(@PathVariable("id") Integer id, Model model) {
+        Usuario usuario = usuarioService.obtenerPorId(id);
+
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("modoEdicion", true);
+
+        return "usuario-edicion";
     }
 }

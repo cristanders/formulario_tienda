@@ -43,7 +43,12 @@ public class UsuarioServiceImpl implements UsuarioService{
     }
 
     @Override
-    public void eliminar(Integer id) {
+    public void guardar(Usuario usuario) {
+        usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public  void eliminar(Integer id) {
         if (!usuarioRepository.existsById(id)) {
             throw new ResourceNotFoundException("Usuario con ID no encontrado: " + id);
         }

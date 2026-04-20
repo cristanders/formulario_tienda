@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${modoEdicion} ? 'Editar Usuario' : 'Nuevo Usuario'"></title>
+    <title>Editar Usuario</title>
 
     <style>
         :root {
@@ -45,6 +45,18 @@
             text-align: center;
         }
 
+        .badge-edit {
+            display: inline-block;
+            background: #eef2ff;
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
         h1 {
             color: var(--text-main);
             font-size: 2rem;
@@ -59,10 +71,6 @@
             margin-bottom: 30px;
         }
 
-        form {
-            width: 100%;
-        }
-
         .campo {
             margin-bottom: 20px;
             text-align: left;
@@ -74,7 +82,6 @@
             font-weight: 600;
             font-size: 0.9rem;
             color: #475569;
-            margin-left: 4px;
         }
 
         input {
@@ -90,23 +97,16 @@
 
         input:focus {
             border-color: var(--primary);
-            background-color: white;
             box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            background-color: white;
         }
 
-        /* Estilo para los errores de validación */
+        /* Estilo para los errores */
         .error {
             color: var(--danger);
             font-size: 0.85rem;
             margin-top: 6px;
             font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .error::before {
-            content: '⚠';
         }
 
         .acciones {
@@ -129,16 +129,15 @@
             display: inline-block;
         }
 
-        .btn-guardar {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+        .btn-update {
+            background: linear-gradient(to right, #059669, #10b981);
             color: white;
-            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
         }
 
-        .btn-guardar:hover {
+        .btn-update:hover {
             transform: translateY(-2px);
             filter: brightness(1.1);
-            box-shadow: 0 15px 20px -3px rgba(79, 70, 229, 0.4);
         }
 
         .btn-cancelar {
@@ -149,7 +148,6 @@
 
         .btn-cancelar:hover {
             background-color: #f1f5f9;
-            color: var(--text-main);
         }
     </style>
 </head>
@@ -157,45 +155,38 @@
 <body>
 
 <div class="container">
-    <h1 th:text="${modoEdicion} ? 'Editar Usuario' : 'Nuevo Usuario'">Nuevo Usuario</h1>
-    <p class="subtitulo">Completa la información del perfil</p>
+    <span class="badge-edit">Modo Edición</span>
+    <h1>Actualizar Perfil</h1>
+    <p class="subtitulo">Modifica los datos del usuario seleccionado</p>
 
-    <form th:action="@{/usuarios/guardar}"
-          th:object="${usuario}"
-          method="post">
+    <form th:action="@{/usuarios/guardar}" th:object="${usuario}" method="post">
 
-        <input type="hidden" th:field="*{idUsuario}" th:if="${modoEdicion}">
+        <input type="hidden" th:field="*{idUsuario}">
 
         <div class="campo">
             <label for="nombreUsuario">Nombre</label>
-            <input type="text" id="nombreUsuario" th:field="*{nombreUsuario}" placeholder="Ingrese el nombre del usuario">
-            <div class="error"
-                 th:if="${#fields.hasErrors('nombreUsuario')}"
-                 th:errors="*{nombreUsuario}">Error en nombre</div>
+            <input type="text" id="nombreUsuario" th:field="*{nombreUsuario}">
+            <div class="error" th:if="${#fields.hasErrors('nombreUsuario')}" th:errors="*{nombreUsuario}"></div>
         </div>
 
         <div class="campo">
             <label for="apellidoUsuario">Apellido</label>
-            <input type="text" id="apellidoUsuario" th:field="*{apellidoUsuario}" placeholder="Ingrese el apellido del usuario">
-            <div class="error"
-                 th:if="${#fields.hasErrors('apellidoUsuario')}"
-                 th:errors="*{apellidoUsuario}">Error en apellido</div>
+            <input type="text" id="apellidoUsuario" th:field="*{apellidoUsuario}">
+            <div class="error" th:if="${#fields.hasErrors('apellidoUsuario')}" th:errors="*{apellidoUsuario}"></div>
         </div>
 
         <div class="campo">
             <label for="edadUsuario">Edad</label>
-            <input type="number" id="edadUsuario" th:field="*{edadUsuario}" placeholder="0">
-            <div class="error"
-                 th:if="${#fields.hasErrors('edadUsuario')}"
-                 th:errors="*{edadUsuario}">Error en edad</div>
+            <input type="number" id="edadUsuario" th:field="*{edadUsuario}">
+            <div class="error" th:if="${#fields.hasErrors('edadUsuario')}" th:errors="*{edadUsuario}"></div>
         </div>
 
         <div class="acciones">
-            <button type="submit" class="btn btn-guardar">
-              Guardar
+            <button type="submit" class="btn btn-update">
+                Guardar
             </button>
 
-            <a th:href="@{/usuarios}" class="btn btn-cancelar">Volver</a>
+            <a th:href="@{/usuarios}" class="btn btn-cancelar">Regresar</a>
         </div>
     </form>
 </div>
